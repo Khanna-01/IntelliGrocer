@@ -1,6 +1,5 @@
 # IntelliGrocer
 
-![IntelliGrocer](https://your-image-url.com)
 
 ## Overview
 IntelliGrocer is a Smart Inventory Management System designed for supermarkets. It streamlines inventory tracking, automates stock alerts, and optimizes pricing strategies to reduce waste and maximize efficiency. Unlike traditional inventory systems, IntelliGrocer leverages predictive analytics and dynamic pricing to offer a more intelligent approach to inventory control.
