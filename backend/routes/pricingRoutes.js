@@ -1,65 +1,91 @@
 const express = require("express");
 const router = express.Router();
-const Product = require("../models/Product");
+const InventoryItem = require("../models/InventoryItem");
 
-// 📌 Fetch Dynamic Pricing Data
+
 router.get("/dynamic", async (req, res) => {
   try {
-    const products = await Product.find();
+    const inventoryItems = await InventoryItem.find();
 
-    if (products.length === 0) {
+    if (!inventoryItems.length) {
       return res.status(404).json({ message: "No pricing data found" });
     }
 
-    // ✅ Adjust pricing dynamically based on demand & stock levels
-    const pricingData = products.map(product => {
+    
+    const applyDynamicPricing = (item) => {
+      if (!item || !item.basePrice) return null; 
+
       let priceAdjustmentFactor = 1.0;
       let priceMessage = "";
 
-      // If stock is high and sales are low, suggest a lower price (discount)
-      if (product.stockLevel > 30 && product.salesTrend < 50) {
-        priceAdjustmentFactor -= 0.25; // 25% discount
+      if (item.stockLevel > 30 && item.salesTrend < 50) {
+        priceAdjustmentFactor -= 0.25;
         priceMessage = "Discounted due to low demand";
       }
 
-      // If stock is low and sales are high, suggest a higher price (increase)
-      if (product.stockLevel < 10 && product.salesTrend > 70) {
-        priceAdjustmentFactor += 0.30; // 30% increase
+      if (item.stockLevel < 10 && item.salesTrend > 70) {
+        priceAdjustmentFactor += 0.30;
         priceMessage = "Price increased due to high demand";
       }
 
-      // If product is expiring soon, suggest a discount
-      const daysUntilExpiration = (new Date(product.expirationDate) - new Date()) / (1000 * 60 * 60 * 24);
-      if (daysUntilExpiration < 7) { // Increased window for expiry discounts
-        priceAdjustmentFactor -= 0.35; // 35% discount for near-expiry products
+      const daysUntilExpiration = item.expirationDate
+        ? (new Date(item.expirationDate) - new Date()) / (1000 * 60 * 60 * 24)
+        : null;
+
+      if (daysUntilExpiration !== null && daysUntilExpiration < 7) {
+        priceAdjustmentFactor -= 0.35;
         priceMessage = "Discounted due to expiration risk";
       }
 
-      // If stock is very high and sales are also high (overstock situation), consider a price drop
-      if (product.stockLevel > 50 && product.salesTrend > 60) {
-        priceAdjustmentFactor -= 0.10; // Small discount for overstocked items
+      if (item.stockLevel > 50 && item.salesTrend > 60) {
+        priceAdjustmentFactor -= 0.10;
         priceMessage = "Discounted due to overstock";
       }
 
-      // Apply the price adjustment and calculate the suggested price
-      const suggestedPrice = (product.basePrice * priceAdjustmentFactor).toFixed(2);
-
-      // Ensure the price doesn't fall below a minimum threshold
-      const minimumPrice = product.basePrice * 0.5; // e.g., price can't go below 50% of the base price
+      const suggestedPrice = (item.basePrice * priceAdjustmentFactor).toFixed(2);
+      const minimumPrice = item.basePrice * 0.5;
       const finalSuggestedPrice = Math.max(parseFloat(suggestedPrice), minimumPrice).toFixed(2);
 
       return {
-        name: product.name,
-        currentPrice: product.basePrice.toFixed(2),
+        name: item.name,
+        currentPrice: item.basePrice.toFixed(2),
         suggestedPrice: finalSuggestedPrice,
-        priceMessage: priceMessage
+        priceMessage: priceMessage,
       };
-    });
+    };
+
+    const pricingData = inventoryItems.map(applyDynamicPricing).filter((item) => item !== null);
 
     res.json(pricingData);
   } catch (error) {
-    console.error("Error fetching dynamic pricing:", error);
-    res.status(500).json({ message: "Server error" });
+    console.error(" Error fetching dynamic pricing:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
+
+router.post("/update-sales", async (req, res) => {
+  try {
+    const { itemId, quantity, action } = req.body; 
+
+    const item = await InventoryItem.findById(itemId);
+    if (!item) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    if (action === "purchase") {
+      item.salesTrend += quantity; 
+      item.stockLevel -= quantity; 
+    } else if (action === "refund") {
+      item.salesTrend -= quantity; 
+      item.stockLevel += quantity; 
+    }
+
+    await item.save();
+    res.json({ message: `Item ${action} recorded successfully`, item });
+  } catch (error) {
+    console.error("Error updating sales trend:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 });
 

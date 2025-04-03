@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 const AuthForm = ({ isLogin, setIsLogin, setIsForgot, onLogin }) => {
   const navigate = useNavigate();
-
+  
+  const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
   const [employeeId, setEmployeeId] = useState("");
   const [email, setEmail] = useState("");
@@ -18,37 +19,50 @@ const AuthForm = ({ isLogin, setIsLogin, setIsForgot, onLogin }) => {
     setError(null);
     setLoading(true);
   
+    if (!email || !password) {
+      setError("All fields are required!");
+      setLoading(false);
+      return;
+    }
+  
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      console.log("📢 Sending login request:", { email, password });
+  
+      const response = await fetch("http://localhost:5001/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password }), 
       });
   
       const data = await response.json();
-      console.log("Login response:", data); // ✅ Debugging
+      console.log("Login response:", data);
   
       if (response.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role);
-        localStorage.setItem("username", data.username); // ✅ Store username
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("employeeId", data.employeeId);
+        localStorage.setItem("userId", data.employeeId);
         onLogin(data.role);
       } else {
         setError(data.message || "Invalid credentials.");
       }
     } catch (err) {
-      console.error("Login error:", err);
+      console.error(" Login error:", err);
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
-  
-  
 
-  // Handle Registration Function
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!email.trim()) {
+      setError("Email is required!");
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -61,10 +75,9 @@ const AuthForm = ({ isLogin, setIsLogin, setIsForgot, onLogin }) => {
     }
 
     const userData = {
-      email,
+      email: email.trim(),
       password,
-      confirmPassword,
-      username: fullName,
+      username: fullName.trim(),
       role,
       employeeId,
     };
@@ -73,29 +86,27 @@ const AuthForm = ({ isLogin, setIsLogin, setIsForgot, onLogin }) => {
     setError(null);
 
     try {
-      // Use the full URL for registration too:
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await fetch("http://localhost:5001/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       });
+
       const data = await response.json();
       if (!response.ok) {
         setError(data.message || "An error occurred. Please try again.");
       } else {
         alert("Success: " + data.message);
-        // Clear form fields after successful registration:
         setFullName("");
         setEmail("");
         setPassword("");
         setConfirmPassword("");
         setRole("");
         setEmployeeId("");
-        // Switch back to login mode:
         setIsLogin(true);
       }
     } catch (err) {
-      console.error("Registration error:", err);
+      console.error(" Registration error:", err);
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -105,6 +116,8 @@ const AuthForm = ({ isLogin, setIsLogin, setIsForgot, onLogin }) => {
   return (
     <form onSubmit={isLogin ? handleLogin : handleSubmit}>
       {error && <div className="error">{error}</div>}
+
+    
 
       {!isLogin && (
         <>

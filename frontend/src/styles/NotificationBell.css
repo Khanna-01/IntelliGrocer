@@ -1,0 +1,52 @@
+.notification-bell-container {
+    position: relative;
+    display: inline-block;
+    margin-right: 20px;
+  }
+  
+  .bell-icon {
+    font-size: 24px;
+    position: relative;
+  }
+  
+  .notification-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 50%;
+  }
+  
+  .notification-dropdown {
+    position: absolute;
+    top: 30px; /* right below the bell */
+    right: 0;
+    width: 250px;
+    max-height: 300px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    border-radius: 10px;
+    padding: 10px;
+    overflow-y: auto;
+  }
+  
+  .notification-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .notification-dropdown li {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+  }
+  
+  .notification-dropdown li:last-child {
+    border-bottom: none;
+  }

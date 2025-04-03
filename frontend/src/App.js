@@ -53,7 +53,7 @@ function App() {
         path="/manager-dashboard"
         element={
           userRole === "manager" ? (
-            <ManagerDashboard onLogout={handleLogout} />
+            <ManagerDashboard onLogout={handleLogout} userId={localStorage.getItem("userId")} />
           ) : (
             <Navigate to="/" replace />
           )

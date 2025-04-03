@@ -107,6 +107,227 @@
     color: #2e7d32;
 }
 
+/* Task Management Container */
+.task-management {
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+  }
+  
+  /* Section Title */
+  .task-management h2 {
+    font-size: 24px;
+    color: #2c3e50;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  /* Assign Task Section */
+  .task-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Input Fields */
+  .task-form input,
+  .task-form select {
+    flex: 1;
+    min-width: 180px;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    transition: border 0.3s ease;
+  }
+  
+  .task-form input:focus,
+  .task-form select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
+  }
+  
+  /* Assign Task Button */
+  .assign-task-btn {
+    background: #27ae60;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .assign-task-btn:hover {
+    background: #2ecc71;
+    transform: scale(1.05);
+  }
+  
+  .assign-task-btn:active {
+    transform: scale(0.95);
+  }
+  
+  /* Assigned Tasks List */
+  .task-list {
+    margin-top: 20px;
+  }
+  
+  .task-list h3 {
+    font-size: 20px;
+    color: #2c3e50;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .task-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .task-list li {
+    background: #ecf0f1;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #2c3e50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s ease;
+    border-left: 5px solid #3498db;
+  }
+  
+  .task-list li:hover {
+    background: #d5dbdb;
+  }
+  
+  /* Completed Task Styling */
+  .task-list li.completed {
+    background: #2ecc71;
+    color: white;
+    text-decoration: line-through;
+    border-left: 5px solid #145a32;
+  }
+  
+  /* Status Styling */
+  .task-status {
+    font-size: 14px;
+    color: #7f8c8d;
+    font-weight: bold;
+  }
+  
+  /* Button to Mark as Completed */
+  .complete-task-btn {
+    background: #3498db;
+    color: white;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .complete-task-btn:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+  }
+  
+  .complete-task-btn:active {
+    transform: scale(0.95);
+  }
+  /* Assign Task Form */
+.assign-task-form {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  /* Title */
+  .assign-task-form h3 {
+    font-size: 22px;
+    color: #2c3e50;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  /* Input Fields */
+  .assign-task-form input,
+  .assign-task-form textarea,
+  .assign-task-form select {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .assign-task-form input:focus,
+  .assign-task-form textarea:focus,
+  .assign-task-form select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
+  }
+  
+  /* Textarea for Description */
+  .assign-task-form textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  
+  /* Dropdown Select */
+  .assign-task-form select {
+    cursor: pointer;
+    background: #f8f9fa;
+  }
+  
+  /* Assign Task Button */
+  .assign-task-form button {
+    background: #27ae60;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .assign-task-form button:hover {
+    background: #2ecc71;
+    transform: scale(1.05);
+  }
+  
+  .assign-task-form button:active {
+    transform: scale(0.95);
+  }
+
+
+
+  
+
 /* Alerts Section */
 .alerts {
     margin-top: 20px;
